@@ -3,19 +3,7 @@
 Servo360 motor1;
 Servo360 motor2;
 Servo360 motor3;
-JoyStick joystick1(A0, A1);
-JoyStick joystick2(A2, A3);
-
-int check(Servo360 mot, int x) {
-  int i = mot.read();
-  if (x < 100) {
-    i = i - 1;
-  }
-  if (x > 950) {
-    i = i + 1;
-  }
-  return i;
-}
+int grap = 1;
 
 void setup() {
   motor1.attach(5);
@@ -24,14 +12,34 @@ void setup() {
   motor1.write(90);
   motor2.write(90);
   motor3.write(90);
+  Serial.begin(9600);
 }
 
 void loop() {
-  int x = joystick1.read('x');
-  int y = joystick1.read('y');
-  int clamp = joystick2.read('x');
-  motor1.write(check(motor1, x));
-  motor2.write(check(motor2, y));
-  motor3.write(check(motor3,clamp));
-  delay(20);
+  if(Serial.available()) {
+    char cmd = Serial.read();
+    switch (cmd) {
+    case 'a':
+      motor2.write(motor2.read()-1, 30);
+      break;
+    case 'b':
+      motor2.write(motor2.read()+1, 30);
+      break;  
+    case 'c':
+      motor1.write(motor1.read()+1, 30);
+      break;  
+    case 'd':
+      motor1.write(motor1.read()-1, 30);
+      break;  
+    case 'e':
+      if (grap == 1) {
+        motor3.write(40,800);
+        grap = 0;
+      } else if (grap ==0) {
+        motor3.write(100,800);
+        grap = 1;
+      }
+      break;
+    }
+  }
 }
