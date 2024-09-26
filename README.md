@@ -1,6 +1,4 @@
 # RoboticArm
-Controlling a robotic arm using Opencv and Arduino
-
 
 Enter the .ino code into the Arduino IDE and upload it. <br>
 Enter the PORT number of the connected Arduino device in the 8th line of the python file and run it.<br>
